@@ -40,7 +40,7 @@
 
 	try{
 
-		$db = new PDO('mysql:host=127.0.0.1;dbname=site_ecommerce', 'root','');
+		$db = new PDO('mysql:host=127.0.0.1;dbname=ECE', 'root','');
 		$db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER); // les noms de champs seront en caractères minuscules
 		$db->setAttribute(PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION); // les erreurs lanceront des exceptions
 		$db->exec('SET NAMES utf8');				
@@ -135,17 +135,16 @@
 
 						$category=$_POST['category'];
 
-						$weight=$_POST['weight'];
 
-						$select = $db->query("SELECT price FROM weights WHERE name='$weight'");
+					//	$select = $db->query("SELECT price FROM weights WHERE name='$weight'");
 
-						$s = $select->fetch(PDO::FETCH_OBJ);
+						//$s = $select->fetch(PDO::FETCH_OBJ);
 
-						$shipping = $s->price;
+
 
 						$old_price = $price;
 
-						$Final_price = $old_price + $shipping;
+						$Final_price = $old_price;
 
 						$select=$db->query("SELECT tva FROM products");
 
@@ -161,9 +160,9 @@
 
 						$final_price_1 = $Final_price+$Final_price*$tva/100;
 
-						$insert = $db->query("INSERT INTO products (title,slug,description,price,category,weight,shipping,tva,final_price,stock) VALUES('$title','$slug','$description','$price','$category','$weight','$shipping','$tva','$final_price_1','$stock')");
+						$insert = $db->query("INSERT INTO products (title,slug,description,price,category,tva,final_price,stock) VALUES('$title','$slug','$description','$price','$category','$tva','$final_price_1','$stock')");
 
-						header('Location: ../boutique.php?category='.$category);
+						header('Location: ../categorie.php?category='.$category);
 
 					}else{
 
@@ -198,23 +197,7 @@
 				 ?>
 
 				</select><br/><br/>
-				<h3>Poids : (plus de) </h3><select name="weight">
-				<?php 
-
-					$select=$db->query("SELECT * FROM weights");
-
-					while($s = $select->fetch(PDO::FETCH_OBJ)){
-
-						?>
-
-						<option><?php echo $s->name; ?></option>
-
-						<?php
-
-					}
-
-				 ?>
-				</select><br/><br/>
+				
 				<h3>Stock : </h3><input type="text" name="stock"/><br/><br/>
 				<input type="submit" name="submit"/>
 				</form>
@@ -231,7 +214,7 @@
 					echo $s->title;
 					?>
 					<a href="?action=modify&amp;id=<?php echo $s->id; ?>">Modifier</a>
-					<a href="?action=delete&amp;id=<?php echo $s->id; ?>">X</a><br/><br/>
+					<a href="?action=delete&amp;id=<?php echo $s->id; ?>">Supprimer</a><br/><br/>
 					<?php
 
 				}
@@ -319,7 +302,7 @@
 					echo $s->name;
 					?>
 					<a href="?action=modify_category&amp;id=<?php echo $s->id; ?>">Modifier</a>
-					<a href="?action=delete_category&amp;id=<?php echo $s->id; ?>">X</a><br/><br/>
+					<a href="?action=delete_category&amp;id=<?php echo $s->id; ?>">Supprimer</a><br/><br/>
 					<?php
 
 				}
@@ -372,23 +355,10 @@
 
 				?>
 
-				<h3>Options de poids (plus de)</h3>
+				<h3>Options de remise</h3>
 
 				<?php
-
-				$select = $db->query("SELECT * FROM weights");
-
-				while($s=$select->fetch(PDO::FETCH_OBJ)){
-
-					?>
-
-					<form action="" method="post">
-					<input type="text" name="weight" value="<?php echo $s->name;?>"/><a href="?action=modify_weight&amp;name=<?php echo $s->name; ?>">  Modifier</a>
-					</form>
-
-					<?php
-
-				}
+				
 
 				$select=$db->query("SELECT tva FROM products");
 
@@ -420,40 +390,7 @@
 				<input type="text" name="tva" value="<?= $show_tva; ?>"/>
 				<input type="submit" name="submit2" value="Modifier"/>
 				</form>
-
-				<?php
-
-
-			}else if($_GET['action']=='modify_weight'){
-
-				$old_weight = $_GET['name'];
-				$select = $db->query("SELECT * FROM weights WHERE name=$old_weight");
-				$s = $select->fetch(PDO::FETCH_OBJ);
-
-				if(isset($_POST['submit'])){
-
-					$weight=$_POST['weight'];
-					$price=$_POST['price'];
-
-					if($weight&&$price){
-
-						$update = $db->query("UPDATE weights SET name='$weight', price='$price' WHERE name=$old_weight");
-						header("Refresh:0");
-
-					}
-
-				}
-
-				?>
-
-				<h3>Options de poids (plus de)</h3>
-
-				<form action="" method="post">
-				<h3>Poids (plus de) : </h3><input type="text" name="weight" value="<?php echo $_GET['name']; ?>"/><br/>
-				<h3>Correspond à </h3><input type="text" name="price" value="<?php echo $s->price; ?>"/> <h3>Euros</h3>
-				<input type="submit" name="submit" value="Modifier"/>
-				</form>
-
+ 
 				<?php
 
 

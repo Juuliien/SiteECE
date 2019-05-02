@@ -33,12 +33,6 @@ CREATE TABLE IF NOT EXISTS `category` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
---
--- Contenu de la table `category`
---
-
-INSERT INTO `category` (`id`, `name`, `slug`) VALUES
-(4, 'Véhicules', 'vehicules');
 
 -- --------------------------------------------------------
 
@@ -53,8 +47,6 @@ CREATE TABLE IF NOT EXISTS `products` (
   `description` varchar(255) NOT NULL,
   `price` text NOT NULL,
   `category` varchar(255) NOT NULL,
-  `weight` varchar(255) NOT NULL,
-  `shipping` varchar(255) NOT NULL,
   `tva` varchar(255) NOT NULL,
   `final_price` varchar(255) NOT NULL,
   `stock` varchar(255) NOT NULL,
@@ -64,9 +56,6 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 -- Contenu de la table `products`
 --
-
-INSERT INTO `products` (`ID`, `title`, `slug`, `description`, `price`, `category`, `weight`, `shipping`, `tva`, `final_price`, `stock`) VALUES
-(39, 'Velo', 'velo', 'Description du velo', '1000', 'Véhicules', '100', '10', '20', '1212', '91');
 
 -- --------------------------------------------------------
 
@@ -122,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
-(2, 'LearnPHPaz', 'learnphpaz@gmail.com', '1212');
+(2, 'AmirleBG', 'bonjour@bonjour.fr', '1234');
 
 -- --------------------------------------------------------
 
@@ -130,7 +119,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 -- Structure de la table `weights`
 --
 
-CREATE TABLE IF NOT EXISTS `weights` (
+/*CREATE TABLE IF NOT EXISTS `weights` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` int(11) NOT NULL,
   `price` int(11) NOT NULL,

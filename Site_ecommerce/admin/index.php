@@ -2,12 +2,12 @@
 
 	session_start();
 
-	$user='LearnPHPaz';
-	$password_definit='123456789';
+	$user='AmirleBG';
+	$password_definit='AmirleBG';
 
-	if($_SESSION['username']){
+	/*if($_SESSION['username']){
 		header('Location: admin.php');
-	}
+	}*/
 
 	if(isset($_POST['submit'])){
 
@@ -42,7 +42,7 @@
 <h1>Administration - Connexion</h1>
 
 <form action="" method="POST">
-<h3>Pseudo :</h3><input type="text" name="username"/><br/><br/>
-<h3>Mot-de-passe :</h3><input type="password" name="password"/><br/><br/>
+<h3>Pseudo : AmirleBG</h3><input type="text" name="username"/><br/><br/>
+<h3>Mot-de-passe :AmirleBG</h3><input type="password" name="password"/><br/><br/>
 <input type="submit" name="submit"/><br/><br/>
 </form>

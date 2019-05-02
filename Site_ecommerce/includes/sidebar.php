@@ -1,4 +1,4 @@
-<div class="sidebar">
+ca<div class="sidebar">
 <h4>Derniers Articles</h4>
 
 <?php
@@ -20,7 +20,7 @@
 		?>
 
 		<div style="text-align:center;">
-		<a style="color:white;" href="boutique.php?show=<?= $s->slug; ?>"><img height="80" width="200" src="imgs/<?php echo $s->slug; ?>.jpg"/>
+		<a style="color:white;" href="categorie.php?show=<?= $s->slug; ?>"><img height="80" width="200" src="imgs/<?php echo $s->slug; ?>.jpg"/>
 		<h2 style="color:white;"><?php echo $s->title;?></a></h2>
 		<h5 style="color:white;"><?php echo $description_finale; ?></h5>
 		<h4 style="color:white"><?php echo $s->price; ?> euros</h4></div>

@@ -2,10 +2,8 @@
 
 require_once('includes/header.php');
 ?>
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
 <?php
-require_once('includes/sidebar.php');
 require_once('includes/functions_panier.php');
 
 $prixfinal = 0;
@@ -117,8 +115,8 @@ if(!$erreur){
 
 				$total = MontantGlobal();
 				$totaltva = MontantGlobalTVA();
-				$shipping = CalculFraisPorts();
-				$prixfinal = $totaltva + $shipping;
+				//$shipping = CalculFraisPorts();
+				$prixfinal = $totaltva ;//+ $shipping;
 
 				for($i = 0; $i<$nbProduits; $i++){
 
@@ -139,8 +137,8 @@ if(!$erreur){
 						<td colspan="2"><br/>
 							<p>Total : <?php echo $total." €"; ?></p><br/>
 							<p>Total avec TVA : <?php echo $totaltva." €"; ?></p>
-							<p>Calcul des frais de port : <?php echo $shipping." €"; ?></p>
-							<?php if(isset($_SESSION['user_id'])){ ?><div id="paypal-button"></div><?php }else{?><h4 style="color:red;">Vous devez être connecté pour payer votre commande. <a href="connect.php">Se connecter</a></h4><?php } ?>
+						 <!--	<p>Calcul des frais de port : <?php echo $shipping." €"; ?></p>-->
+							<?php if(isset($_SESSION['user_id'])){ ?><?php }else{?><h4 style="color:red;">Vous devez être connecté pour payer votre commande. <a href="connect.php">Se connecter</a></h4><?php } ?>
 						</td>
 					</tr>
 					<tr>
@@ -161,91 +159,7 @@ if(!$erreur){
 		?>
 	</table>
 </form>
-<script>
-	paypal.Button.render({
 
-	    env: 'sandbox', // sandbox | production, si c'est pour tester : sandbox, si c'est pour de vrai : production
-
-	    // PayPal Client IDs - replace with your own
-	    // Create a PayPal app: https://developer.paypal.com/developer/applications/create
-	    // Remplacez par le vôtre
-	    client: {
-	        sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-	        production: '<insert production client id>'
-	    },
-
-	    // Vous pouvez changer le style du bouton en vous référant à l'API et en cherchant dans le menu "Button styles":
-	    // https://developer.paypal.com/demo/checkout/#/pattern/checkout
-
-	    style: {
-            layout: 'vertical',  // horizontal | vertical
-            size:   'medium',    // medium | large | responsive
-            shape:  'rect',      // pill | rect
-            color:  'gold'       // gold | blue | silver | black
-        },
-
-	    // Show the buyer a 'Pay Now' button in the checkout flow
-	    commit: true,
-
-	    // payment() is called when the button is clicked
-	    payment: function(data, actions) {
-
-	        // Make a call to the REST api to create the payment
-	        // Changez la devise si vous le souhaitez
-	        return actions.payment.create({
-	            payment: {
-	                transactions: [
-	                    {
-	                        amount: { total: <?= $prixfinal ?>, currency: 'EUR' }
-	                    }
-	                ]
-	            },
-	        });
-	    },
-
-	    // onAuthorize() is called when the buyer approves the payment
-	    onAuthorize: function(data, actions) {
-
-	        return actions.payment.get().then(function(data) {
-
-                // Ici on récupère les informations sur la transaction, vous êtes libres d'en ajouter en vous servant du console.log ci-dessous et en les rajoutant dans process.php et dans la structure de la base de données (table transactions).
-
-                console.log(data);
-
-                var shipping = data.payer.payer_info.shipping_address;
-
-                var name = shipping.recipient_name;
-                var street = shipping.line1;
-                var country_code = shipping.country_code;
-                var city = shipping.city;
-                var date = '<?= date("Y/m/d") ?>';
-                var transaction_id = data.id;
-                var price = data.transactions[0].amount.total;
-                var currency_code = 'EUR';
-
-                $.post(
-         			"process.php",
-         			{
-         				name : name,
-         				street: street,
-         				city: city,
-         				country_code : country_code,
-         				date: date,
-         				transaction_id: transaction_id,
-         				price: price,
-         				currency_code: currency_code,
-         			}
-				);
-
-                //Redirection après le paiement
-                return actions.payment.execute().then(function() {
-                	$(location).attr("href", '<?= "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI'])."/success.php"; ?>');
-            	});
-            });
-	    },
-
-	}, '#paypal-button');
-</script>
 <?php
 
 require_once('includes/footer.php');

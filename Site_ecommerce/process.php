@@ -3,7 +3,7 @@ session_start();
 require_once('includes/functions_panier.php');
 try{
 
-	$db = new PDO('mysql:host=127.0.0.1;dbname=site_ecommerce', 'root','');
+	$db = new PDO('mysql:host=127.0.0.1;dbname=ECE', 'root','');
 	$db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER); // les noms de champs seront en caractères minuscules
 	$db->setAttribute(PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION); // les erreurs lanceront des exceptions
 						
