@@ -14,8 +14,8 @@ if(!isset($_SESSION['user_id'])){
 
 		if($username&&$email&&$password&&$repeatpassword){
 			if($password==$repeatpassword){
-				$db->query("INSERT INTO users (username, email, password) VALUES('$username', '$email', '$password')");
-				echo '<br/><h3 style="color:green;">Vous avez créé votre compte, vous pouvez maintenant vous <a href="connect.php">connecter</a>.</h3>';
+				$db->query("INSERT INTO seller(username, email, password) VALUES('$username', '$email', '$password')");
+				echo '<br/><h3 style="color:green;">Vous avez créé votre compte vendeur, vous pouvez maintenant vous <a href="indexvendeur.php">connecter</a>.</h3>';
 			}else{
 				echo '<br/><h3 style="color:red;">Les mot-de-passes ne sont pas identiques.</h3>';
 			}
@@ -36,30 +36,29 @@ if(!isset($_SESSION['user_id'])){
 			margin-left:450px;
 		}
 		.connectTitre{
-			margin-left:600px;
+			margin-left:550px;
 
 		}
 		</style>
 	<br/>
-	<h1 class="connectTitre">S'enregister</h1>
-	<br>
-<table width=40% class="connect">
+	<h1 class="connectTitre">S'enregister comme vendeur</h1>
+<table class="connect" width="40%">
 	<form action="" method="POST">
 	<tr>
-		<td><h4>Votre pseudo </td><td><input type="text" name="username"/></h4>	</td>
+	<td><h4>Votre pseudo </td><td><input type="text" name="username"/></h4></td>
 
 	</tr>
 	<tr>
-		<td><h4>Votre email </td><td><input type="email" name="email"/></h4></td>
+	<td><h4>Votre email </td><td><input type="email" name="email"/></h4></td>
 
 	</tr>
 	<tr>
-	<td><h4>Votre mot-de-passe </td><td><input type="password" name="password"/></h4></td>
-
+	<td><h4>Votre mot-de-passe </td><td><input type="password" name="password"/></h4>
+</td>
 	</tr>
 	<tr>
-	<td><h4>Répétez votre mot-de-passe </td><td><input type="password" name="repeatpassword"/></h4></td>
-
+	<td><h4>Répétez votre mot-de-passe </td><td><input type="password" name="repeatpassword"/></h4>
+</td>
 	</tr>
 	<tr>
 	<td></td><td><input class="btn btn-light" type="submit" name="submit"/>
@@ -67,15 +66,13 @@ if(!isset($_SESSION['user_id'])){
 	</tr>
 	</form>
 	<tr>
-	<td><a href="connect.php">Se connecter</a></td>
-
-	</tr>
-	</table>
+	<td>	<a href="indexvendeur.php">Se connecter</a>
+</td></tr>
 	<br/>
+	</table>
+
 <?php
 
-}else{
-	header('Location:my_account.php');
 }
 ?>
 <?php
