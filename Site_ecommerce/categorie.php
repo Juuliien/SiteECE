@@ -2,7 +2,7 @@
 
 	require_once('includes/header.php');
 
-	
+	echo '<br>';
 
 	if(isset($_GET['show'])){
 

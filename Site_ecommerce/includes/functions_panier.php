@@ -4,7 +4,7 @@ function creationPanier(){
 
    try{
 
-      $db = new PDO('mysql:host=127.0.0.1;dbname=ECE', 'root','');
+      $db = new PDO('mysql:host=localhost;dbname=ECE', 'root','');
       $db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER); // les noms de champs seront en caractères minuscules
       $db->setAttribute(PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION); // les erreurs lanceront des exceptions
       $db->exec('SET NAMES utf8');           
@@ -12,7 +12,7 @@ function creationPanier(){
 
    catch(Exception $e){
 
-      die('Veuillez vérifier la connexion à la base de données');
+      die('vérifier la connexion à la base de données');
 
    }
 
@@ -23,9 +23,11 @@ function creationPanier(){
       $_SESSION['panier']['qteProduit'] = array();
       $_SESSION['panier']['prixProduit'] = array();
       $_SESSION['panier']['verrou'] = false;
-      $select = $db->query("SELECT tva FROM products");
+      $select = $db->query("SELECT remise FROM products");
       $data = $select->fetch(PDO::FETCH_OBJ);
-      $_SESSION['panier']['tva'] = $data->tva;
+      $_SESSION['panier']['remise'] = ($data->remise);
+      
+
    }
    return true;
 }
@@ -34,7 +36,7 @@ function ajouterArticle($slugProduit,$qteProduit,$prixProduit){
 
    try{
 
-      $db = new PDO('mysql:host=127.0.0.1;dbname=ECE', 'root','');
+      $db = new PDO('mysql:host=localhost;dbname=ECE', 'root','');
       $db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER); // les noms de champs seront en caractères minuscules
       $db->setAttribute(PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION); // les erreurs lanceront des exceptions
       $db->exec('SET NAMES utf8');            
@@ -68,7 +70,7 @@ function ajouterArticle($slugProduit,$qteProduit,$prixProduit){
       }
    }
    else{
-   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
+   echo "Un problème est survenu ";
    }
 }
 
@@ -92,7 +94,7 @@ function modifierQTeArticle($slugProduit,$qteProduit){
       }
    }
    else{
-   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
+   echo "Un problème est survenu";
    }
 }
 
@@ -127,14 +129,14 @@ function MontantGlobal(){
    return $total;
 }
 
-function MontantGlobalTva(){
+function MontantGlobalRemise(){
 
    $total=0;
    for($i = 0; $i < count($_SESSION['panier']['slugProduit']); $i++)
    {
       $total += $_SESSION['panier']['qteProduit'][$i] * $_SESSION['panier']['prixProduit'][$i];
    }
-   return $total + $total*$_SESSION['panier']['tva']/100;
+   return $total + $total*($_SESSION['panier']['remise']/100);
 }
 
 function supprimerPanier(){
@@ -159,48 +161,6 @@ function compterArticles()
 
 }
 
-/*function CalculFraisPorts(){
-
-   try{
-
-      $db = new PDO('mysql:host=127.0.0.1;dbname=ECE', 'root','');
-      $db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER); // les noms de champs seront en caractères minuscules
-      $db->setAttribute(PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION); // les erreurs lanceront des exceptions
-      $db->exec('SET NAMES utf8');            
-   }
-
-   catch(Exception $e){
-
-      die('Veuillez vérifier la connexion à la base de données');
-
-   }
-
-   $weight_product = 0;
-   $shipping = 0;
-
-   for($i = 0; $i < compterArticles(); $i++){
-
-      for($j = 0; $j < $_SESSION['panier']['qteProduit'][$i]; $j++){
-
-         $slug = addslashes($_SESSION['panier']['slugProduit'][$i]);
-         $select = $db->query("SELECT weight FROM products WHERE slug='$slug'");
-         $result = $select->fetch(PDO::FETCH_OBJ);
-         $weight = $result->weight;
-
-         $weight_product += $weight;
-
-      }
-
-   }
-
-   $select2 = $db->query("SELECT * FROM weights WHERE name <= '$weight_product' ORDER BY price DESC");
-   
-   $result2 = $select2->fetch(PDO::FETCH_OBJ);
-
-   $shipping = $result2->price;   
-
-   return $shipping;
-
-}*/      
+  
 
 ?>

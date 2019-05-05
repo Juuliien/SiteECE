@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('includes/functions_panier.php');
+
 try{
 
 	$db = new PDO('mysql:host=127.0.0.1;dbname=ECE', 'root','');
@@ -15,17 +16,24 @@ catch(Exception $e){
 
 }
 
-$name = $_POST['name'];
-$street = $_POST['street'];
-$city = $_POST['city'];
-$country_code = $_POST['country_code'];
-$date = $_POST['date'];
-$transaction_id = $_POST['transaction_id'];
-$price = $_POST['price'];
-$currency_code = $_POST['currency_code'];
-$user_id = $_SESSION['user_id'];
 
-$db->query("INSERT INTO transactions (name, street, city, country, date, transaction_id, amount, currency_code, user_id) VALUES('$name', '$street', '$city', '$country_code', '$date', '$transaction_id', '$price', '$currency_code', '$user_id')");
+$name = $_POST['name'];
+
+$street = $_POST['street'];
+$city = $_POST['ville'];
+$pays = $_POST['pays'];
+$tel= $_POST['tel'];
+$typecarte= $_POST['typecarte'];
+$price = $_SESSION['prix'];
+$numcarte = $_POST['number'];
+$nomcarte = $_POST['nomcarte'];
+$date = $_POST['date'];
+$crypto = $_POST['crypto'];
+$user_id = $_SESSION['user_id'];
+$transaction_id = rand();
+
+$db->query("INSERT INTO transactions(name, Adresse, Ville, Pays, telephone, transaction_id, user_id, typecarte, numerocarte, nomcarte, dateexpi, crypto, prix) 
+	VALUES('$name', '$street', '$city', '$pays', '$tel', '$transaction_id', '$user_id', '$typecarte', '$numcarte','$nomcarte','$date','$crypto', '$price')");
 
 
 for($i = 0; $i<count($_SESSION['panier']['libelleProduit']); $i++){
@@ -40,5 +48,6 @@ for($i = 0; $i<count($_SESSION['panier']['libelleProduit']); $i++){
 }
 
 supprimerPanier();
+header('Location: success.php');
 
 ?>
